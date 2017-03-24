@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.cbccessence.noyawa.noyawaonthego" >
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Network State Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="org.cbccessence.noyawa.noyawaonthego.activity.WelcomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible">
+        </activity>
+
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.AudioGalleryActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.FirstTrimesterActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.ForgotPasswordActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.NewClientRegistrationActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.PregnancyMenuActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.RadioSeriesActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.SecondTrimesterActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.StoryMenuActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.ThirdTrimesterActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.TopicsMenuActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.VisualAidsViewPager"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.VisualAidsGalleryView"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.YouthHealthMenuActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.application.URLMediaPlayerActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingsActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingSessionActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.LanguageSettingsActivity"/>
+        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity_Updated"/>
+
+
+    </application>
+
+</manifest>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/youth_sexual_health"
+            android:icon="@drawable/ic_accessibility_black_24dp"
+            android:title="@string/youth_and_sex_health"
+            />
+        <item
+            android:id="@+id/story_messages"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="@string/story_messages"/>
+
+        <item
+            android:id="@+id/radio_series"
+            android:icon="@drawable/ic_radio_black_24dp"
+            android:title="@string/radio_series"
+            />
+        <item
+            android:id="@+id/visual_aids"
+            android:icon="@drawable/ic_remove_red_eye_black_24dp"
+            android:title="@string/visual_aids" />
+
+        <item
+            android:id="@+id/pregnancy_messages"
+            android:icon="@drawable/ic_pregnant_woman_black_24dp"
+            android:title="@string/pregnancy_messages" />
+
+        <item
+            android:id="@+id/registration"
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="@string/registration" />
+
+
+    </group>
+
+    <item android:title="">
+        <menu>
+
+            <item
+                android:id="@+id/language"
+                android:icon="@drawable/ic_language_black_24dp"
+                android:title="@string/language_2" />
+
+            <item
+                android:id="@+id/log_out"
+                android:title="Log out" />
+        </menu>
+    </item>
+
+</menu>
