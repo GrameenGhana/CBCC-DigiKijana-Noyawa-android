@@ -91,7 +91,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
             case R.id.action_home:
                 Intent goHome = new Intent(Intent.ACTION_MAIN);
-                goHome.setClass(TopicsMenuActivity.this, MenuActivity.class);
+                //goHome.setClass(TopicsMenuActivity.this, MenuActivity.class);
                 goHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goHome);
                 finish();

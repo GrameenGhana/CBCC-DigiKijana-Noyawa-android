@@ -1,10 +1,18 @@
 package org.cbccessence.noyawa.noyawaonthego.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -61,6 +69,11 @@ public class LoginActivity extends AppCompatActivity {
 
     // Connection detector class
     HttpHandler cd;
+
+    static String[] PERMISSIONS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
     
 
     @Override
@@ -100,9 +113,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 // check for Internet status
                 if (isInternetPresent) {
-                    // Internet Connection is Present
-                    // make HTTP requests
-                    login();
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        launchMultiplePermissions(LoginActivity.this);
+                    else login();
+
+
                 } else {
                     // Internet connection is not present
                     // Ask user to connect to Internet
@@ -124,9 +139,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 // check for Internet status
                 if (isInternetPresent) {
-                    // Internet Connection is Present
-                    // make HTTP requests
-                    login();
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        launchMultiplePermissions(LoginActivity.this);
+                    else login();
+
                 } else {
                     // Internet connection is not present
                     // Ask user to connect to Internet
@@ -171,6 +187,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+
+
+    public static boolean launchMultiplePermissions(Activity context) {
+        Boolean hasPermissions = null;
+
+        for(String permission : PERMISSIONS){
+            if(!hasPermission(context, permission)){
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
+                    ActivityCompat.requestPermissions(context, PERMISSIONS, 30);
+                } else {
+                    ActivityCompat.requestPermissions(context, PERMISSIONS, 30);
+                }
+
+                return false;
+            }
+
+
+        }
+
+        return true;
+    }
+
+
+    public static boolean hasPermission(Context context, String PERMISSION) {
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
+
+            if (ActivityCompat.checkSelfPermission(context, PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, PERMISSION)) {
+
+
+                }
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_FORGOT_PASSWORD) {
@@ -210,6 +268,51 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permission, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permission, grantResults);
+
+
+
+        if(grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+
+
+            //httpHandler.showAlertDialog(LoginActivity.this, "Provide permissions", "Digitunza requires all permissions to work effectively");
+            AlertDialog.Builder alertDialog = new  AlertDialog.Builder(this, R.style.AppAlertDialog)
+                    .setTitle("Permissions")
+                    .setMessage("DigiKijana requires all permissions to work effectively")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            dialogInterface.dismiss();
+                            login();
+                        }
+                    }).setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            dialogInterface.dismiss();
+                            supportFinishAfterTransition();
+
+                        }
+                    });
+
+            AlertDialog alert = alertDialog.create();
+            alert.show();
+        }else {
+
+            // login
+            login();
+
+
+        }
     }
 
 }

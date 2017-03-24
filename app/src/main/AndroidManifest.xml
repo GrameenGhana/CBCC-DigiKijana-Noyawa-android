@@ -38,21 +38,17 @@
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.AudioGalleryActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.FirstTrimesterActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.ForgotPasswordActivity"/>
-        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.NewClientRegistrationActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.PregnancyMenuActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.RadioSeriesActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.SecondTrimesterActivity"/>
-        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.StoryMenuActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.ThirdTrimesterActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.TopicsMenuActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.VisualAidsViewPager"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.VisualAidsGalleryView"/>
-        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.YouthHealthMenuActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.application.URLMediaPlayerActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingsActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingSessionActivity"/>
-        <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.LanguageSettingsActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity_Updated"/>
 
 

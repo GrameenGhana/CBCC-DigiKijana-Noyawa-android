@@ -1,12 +1,19 @@
 package org.cbccessence.noyawa.noyawaonthego.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +37,7 @@ import org.cbccessence.noyawa.noyawaonthego.fragments.YouthSexualHealthFragment;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by aangjnr on 06/02/2017.
  */
@@ -38,6 +46,13 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
 
     DrawerLayout navDrawer;
     static SharedPreferences prefs;
+
+    static String[] PERMISSIONS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+    };
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +64,7 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
         setSupportActionBar(toolbar);
 
 
-
+        launchMultiplePermissions(this);
 
 
 
@@ -84,14 +99,12 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
         {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                invalidateOptionsMenu();
-                syncState();
+                 syncState();
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu();
-                syncState();
+                 syncState();
             }
         };
         navDrawer.addDrawerListener(actionBarDrawerToggle);
@@ -337,6 +350,85 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
 
 
 
+    public static boolean launchMultiplePermissions(Activity context) {
+        Boolean hasPermissions = null;
 
+        for(String permission : PERMISSIONS){
+            if(!hasPermission(context, permission)){
+
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
+                    ActivityCompat.requestPermissions(context, PERMISSIONS, 30);
+                } else {
+                    ActivityCompat.requestPermissions(context, PERMISSIONS, 30);
+                }
+
+                return false;
+            }
+
+
+        }
+
+        return true;
+    }
+
+
+    public static boolean hasPermission(Context context, String PERMISSION) {
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
+
+            if (ActivityCompat.checkSelfPermission(context, PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, PERMISSION)) {
+
+
+                }
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+
+
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permission, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permission, grantResults);
+
+
+
+        if(grantResults[0] != PackageManager.PERMISSION_GRANTED ) {
+
+
+            //httpHandler.showAlertDialog(LoginActivity.this, "Provide permissions", "Digitunza requires all permissions to work effectively");
+            android.app.AlertDialog.Builder alertDialog = new  android.app.AlertDialog.Builder(this, R.style.AppAlertDialog)
+                    .setTitle("Permissions")
+                    .setMessage("DigiKijana requires all permissions to work effectively")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            dialogInterface.dismiss();
+                            launchMultiplePermissions(MenuActivity_Updated.this);
+                        }
+                    }).setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            dialogInterface.dismiss();
+                            supportFinishAfterTransition();
+
+                        }
+                    });
+
+            android.app.AlertDialog alert = alertDialog.create();
+            alert.show();
+        }
+    }
 
 }

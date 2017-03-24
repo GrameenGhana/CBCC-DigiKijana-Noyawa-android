@@ -244,7 +244,7 @@ public class PlaceHolder {
 
 
     public static void inflateNoContentEmptyView(final AppCompatActivity _context){
-        LayoutInflater inflater = (LayoutInflater)_context.getSystemService
+        LayoutInflater inflater = (LayoutInflater) _context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.empty_view_no_content, null);

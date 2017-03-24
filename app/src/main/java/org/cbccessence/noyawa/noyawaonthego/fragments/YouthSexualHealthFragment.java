@@ -1,15 +1,20 @@
 package org.cbccessence.noyawa.noyawaonthego.fragments;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import org.cbccessence.noyawa.noyawaonthego.PlaceHolder;
 import org.cbccessence.noyawa.noyawaonthego.R;
 import org.cbccessence.noyawa.noyawaonthego.activity.AudioGalleryActivity;
 import org.cbccessence.noyawa.noyawaonthego.adapter.TrimesterListViewAdapter;
@@ -38,12 +43,14 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
     private String extras;
     View rootView;
 
+    View view;
 
     List<SubSection> subSecs;
     String TAG = YouthSexualHealthFragment.class.getSimpleName();
     String dir = Noyawa.YSH_DIR;
 
     DatabaseHandler dbh;
+    private RelativeLayout  emptyView;
 
 
     public YouthSexualHealthFragment() {
@@ -69,8 +76,8 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.youth_sexual_health_fragment, container, false);
 
-        BaseActivity.getSubSectionNamesFromLocation(this, dir, TAG);
-        dbh = new  DatabaseHandler(getActivity());
+         dbh = new  DatabaseHandler(getActivity());
+        emptyView = (RelativeLayout) rootView.findViewById(R.id.empty_view_placeHolder);
 
 
         listView = (ListView) rootView.findViewById(R.id.pregnancy_menu_listView);
@@ -111,10 +118,9 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
 
-        }/*else{
-            PlaceHolder.inflateNoContentEmptyView(this);
-        }*/
-
+            emptyView.setVisibility(View.GONE);
+        }else
+            emptyView.setVisibility(View.VISIBLE);
 
 
     }
@@ -136,6 +142,10 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
         intent.putExtra("type", "Audio");
         startActivity(intent);
     }
+
+
+
+
 
 }
 

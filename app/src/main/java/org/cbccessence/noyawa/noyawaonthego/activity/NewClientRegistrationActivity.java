@@ -411,7 +411,7 @@ public class NewClientRegistrationActivity extends AppCompatActivity {
 
             case R.id.action_home:
                 Intent goHome = new Intent(Intent.ACTION_MAIN);
-                goHome.setClass(NewClientRegistrationActivity.this, MenuActivity.class);
+                goHome.setClass(NewClientRegistrationActivity.this, MenuActivity_Updated.class);
                 goHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goHome);
                 finish();

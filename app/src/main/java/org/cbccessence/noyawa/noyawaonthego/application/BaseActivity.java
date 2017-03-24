@@ -293,7 +293,6 @@ public class BaseActivity extends AppCompatActivity {
 		}
 	}
 
-	public static void getSubSectionNamesFromLocation(YouthSexualHealthFragment youthSexualHealthFragment, String dir, String tag) {
 
-	}
+
 }

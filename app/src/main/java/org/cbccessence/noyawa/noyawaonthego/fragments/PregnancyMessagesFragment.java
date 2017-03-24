@@ -34,14 +34,7 @@ public class PregnancyMessagesFragment extends Fragment implements AdapterView.O
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentOne.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static PregnancyMessagesFragment newInstance(String param1, String param2) {
         PregnancyMessagesFragment fragment = new PregnancyMessagesFragment();
@@ -75,8 +68,10 @@ public class PregnancyMessagesFragment extends Fragment implements AdapterView.O
     public void onActivityCreated(Bundle savedInstanceState) {// Always call the superclass so it can save the view hierarchy state
         super.onActivityCreated(savedInstanceState);
         listView=(ListView) getActivity().findViewById(R.id.pregnancy_menu_listView);
+
         String[] values={"1st Trimester","2nd Trimester","3rd Trimester"};
-        NewListViewBaseAdapter adapter=new NewListViewBaseAdapter(getActivity(),values,images);
+
+        NewListViewBaseAdapter adapter = new NewListViewBaseAdapter(getActivity(),values,images);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 

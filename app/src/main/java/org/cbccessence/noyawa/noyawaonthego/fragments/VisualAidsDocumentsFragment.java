@@ -1,5 +1,6 @@
 package org.cbccessence.noyawa.noyawaonthego.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +40,7 @@ public class VisualAidsDocumentsFragment extends Fragment {
      String TAG = "Visual Aids Doc Frag";
 
 
-
+    View view;
 
 
 
@@ -88,7 +89,7 @@ public class VisualAidsDocumentsFragment extends Fragment {
             adapter.setOnItemClickListener(onItemClickListener);
         }
 
-        else PlaceHolder.inflateNoContentEmptyView((AppCompatActivity) getActivity().getApplicationContext());
+        else inflateNoContentEmptyView();
 
     }
 
@@ -126,7 +127,39 @@ public class VisualAidsDocumentsFragment extends Fragment {
 
 
 
+
+    public void inflateNoContentEmptyView() {
+
+        if (view == null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+
+            view = inflater.inflate(R.layout.empty_view_no_content, null);
+            getActivity().getWindow().addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+
+            view.findViewById(R.id.login_button).setVisibility(View.GONE);
+
+        }
     }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (view != null) {
+            try {
+                ((ViewGroup) view.getParent()).removeView(view);
+            } catch (Exception e) {
+                Log.i(TAG, e.getMessage());
+            }
+        }
+    }
+
+
+
+}
 
 
 

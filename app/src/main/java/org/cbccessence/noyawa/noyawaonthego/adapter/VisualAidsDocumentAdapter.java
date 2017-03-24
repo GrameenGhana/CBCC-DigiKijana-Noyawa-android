@@ -7,8 +7,7 @@ package org.cbccessence.noyawa.noyawaonthego.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.pdf.PdfDocument;
-import android.net.Uri;
+ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+
+import com.shockwave.pdfium.PdfDocument;
+import com.shockwave.pdfium.PdfiumCore;
 
 import org.cbccessence.noyawa.noyawaonthego.R;
 import org.cbccessence.noyawa.noyawaonthego.application.Noyawa;
@@ -167,6 +170,7 @@ public class VisualAidsDocumentAdapter extends RecyclerView.Adapter<VisualAidsDo
         try {
             //http://www.programcreek.com/java-api-examples/index.php?api=android.os.ParcelFileDescriptor
             ParcelFileDescriptor fd = context.getApplicationContext().getContentResolver().openFileDescriptor(pdfUri, "r");
+
             PdfDocument pdfDocument = pdfiumCore.newDocument(fd);
             pdfiumCore.openPage(pdfDocument, pageNumber);
             int width = pdfiumCore.getPageWidthPoint(pdfDocument, pageNumber);

@@ -1,6 +1,7 @@
 package org.cbccessence.noyawa.noyawaonthego.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ public class TrimesterListViewAdapter extends BaseAdapter {
     private final int[] Imageid;
     private Context mContext;
 
-    public TrimesterListViewAdapter(Context c, List<SubSection> category, int[] Imageid) {
+    public TrimesterListViewAdapter(Context c, List<SubSection> category, @Nullable  int[] Imageid) {
         mContext = c;
         this.Imageid = Imageid;
         this.category = category;

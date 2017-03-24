@@ -40,7 +40,11 @@ public class ThirdTrimesterActivity extends BaseActivity implements OnItemClickL
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+
 		getSubSectionNamesFromLocation(this, dir, TAG);
+
+
 		dbh = new  DatabaseHandler(this);
 
 		setContentView(R.layout.trimester_menu_activity);

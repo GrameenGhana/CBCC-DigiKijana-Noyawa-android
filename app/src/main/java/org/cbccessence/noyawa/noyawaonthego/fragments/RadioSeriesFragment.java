@@ -1,19 +1,29 @@
 package org.cbccessence.noyawa.noyawaonthego.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.cbccessence.noyawa.noyawaonthego.PlaceHolder;
 import org.cbccessence.noyawa.noyawaonthego.R;
 import org.cbccessence.noyawa.noyawaonthego.activity.AudioGalleryActivity;
 import org.cbccessence.noyawa.noyawaonthego.adapter.TrimesterListViewAdapter;
 import org.cbccessence.noyawa.noyawaonthego.application.Noyawa;
+import org.cbccessence.noyawa.noyawaonthego.database.DatabaseHandler;
+import org.cbccessence.noyawa.noyawaonthego.model.SubSection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aangjnr on 06/02/2017.
@@ -26,6 +36,17 @@ public class RadioSeriesFragment extends Fragment implements AdapterView.OnItemC
     private String submodule;
     private String module;
     private String extras;
+
+    View rootView;
+    View view;
+    RelativeLayout emptyView;
+
+
+    List<SubSection> subSecs;
+    String TAG = RadioSeriesFragment.class.getSimpleName();
+    String dir = Noyawa.YSH_DIR;
+
+    DatabaseHandler dbh;
 
 
     public RadioSeriesFragment() {
@@ -57,7 +78,17 @@ public class RadioSeriesFragment extends Fragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.radio_series_fragment_layout, container, false);
+
+        rootView = inflater.inflate(R.layout.radio_series_fragment_layout, container, false);
+
+        emptyView = (RelativeLayout) rootView.findViewById(R.id.empty_view_placeHolder);
+
+        dbh = new  DatabaseHandler(getActivity());
+
+        listView = (ListView) rootView.findViewById(R.id.pregnancy_menu_listView);
+
+
+        return rootView;
     }
 
 
@@ -74,19 +105,30 @@ public class RadioSeriesFragment extends Fragment implements AdapterView.OnItemC
     public void onActivityCreated(Bundle savedInstanceState) {// Always call the superclass so it can save the view hierarchy state
         super.onActivityCreated(savedInstanceState);
 
+        subSecs = new ArrayList<>();
+        subSecs = dbh.getSubSections(TAG, dir);
 
-        listView=(ListView) getActivity().findViewById(R.id.pregnancy_menu_listView);
-        String[] values={"Synopsis","Episodes"
-        };
 
-        int[] images={R.drawable.ic_audiotrack_black_24dp,
-                R.drawable.ic_audiotrack_black_24dp};
 
-        TrimesterListViewAdapter adapter=new TrimesterListViewAdapter(getActivity(),values,images);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+
+        int[] images={R.drawable.abstinence,
+                R.drawable.rape,
+                R.drawable.teenage_pregnancy};
+
+        if(subSecs != null && subSecs.size() > 0) {
+
+            TrimesterListViewAdapter adapter = new TrimesterListViewAdapter(getActivity(), subSecs, images);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(this);
+
+            emptyView.setVisibility(View.GONE);
+        }else{
+             emptyView.setVisibility(View.VISIBLE);
+        }
+
 
     }
+
 
 
 
@@ -95,71 +137,14 @@ public class RadioSeriesFragment extends Fragment implements AdapterView.OnItemC
 
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent;
-        String englishLocation;
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
 
-        String eweLocation;
-        String dagbaniLocation;
-        String twiLocation;
-
-
-        switch (position){
-
-            case 0:
-                intent=new Intent(getActivity(), AudioGalleryActivity.class);
-                type="Audio";
-                submodule="Synopsis";
-                module= Noyawa.MODULE_RADIO_STORY_MESSAGES;
-                extras=" ";
-                englishLocation="Noyawa/Radio Story Messages/ENGLISH SYNOPSIS";
-                eweLocation="Noyawa/Radio Story Messages/EWE SYNOPSIS/";
-                dagbaniLocation="Noyawa/Radio Story Messages/DAGBANI SYNOPSIS/";
-                twiLocation="Noyawa/Radio Story Messages/TWI SYNOPSIS/";
-
-                intent.putExtra(Noyawa.TYPE, type);
-                intent.putExtra(Noyawa.SUB_MODULE, submodule);
-                intent.putExtra(Noyawa.MODULE, module);
-                intent.putExtra(Noyawa.EXTRAS,extras);
-                intent.putExtra(Noyawa.ENGLISH_AUDIO_LOCATION, englishLocation);
-                intent.putExtra(Noyawa.DAGBANI_AUDIO_LOCATION, dagbaniLocation);
-                intent.putExtra(Noyawa.TWI_AUDIO_LOCATION, twiLocation);
-                intent.putExtra(Noyawa.EWE_AUDIO_LOCATION, eweLocation);
-
-                startActivity(intent);
-                break;
-
-            case 1	:
-                intent=new Intent(getActivity(), AudioGalleryActivity.class);
-                type="Audio";
-                submodule="Episodes";
-                module=Noyawa.MODULE_RADIO_STORY_MESSAGES;
-                extras="";
-                englishLocation="Noyawa/Radio Story Messages/ENGLISH/";
-                eweLocation="Noyawa/Radio Story Messages/EWE/";
-                dagbaniLocation="Noyawa/Radio Story Messages/DAGBANI/";
-                twiLocation="Noyawa/Radio Story Messages/TWI/";
-
-                intent.putExtra(Noyawa.TYPE, type);
-                intent.putExtra(Noyawa.SUB_MODULE, submodule);
-                intent.putExtra(Noyawa.MODULE, module);
-                intent.putExtra(Noyawa.EXTRAS,extras);
-                intent.putExtra(Noyawa.ENGLISH_AUDIO_LOCATION, englishLocation);
-                intent.putExtra(Noyawa.DAGBANI_AUDIO_LOCATION, dagbaniLocation);
-                intent.putExtra(Noyawa.TWI_AUDIO_LOCATION, twiLocation);
-                intent.putExtra(Noyawa.EWE_AUDIO_LOCATION, eweLocation);
-
-                startActivity(intent);
-                break;
-
-
-
-
-
-        }
+        Intent intent = new Intent( getActivity(), AudioGalleryActivity.class );
+        intent.putExtra("subSecName", subSecs.get(position).getSubSectionName());
+        intent.putExtra("directory", dir);
+        intent.putExtra("type", "Audio");
+        startActivity(intent);
     }
-
-
-
 
 }

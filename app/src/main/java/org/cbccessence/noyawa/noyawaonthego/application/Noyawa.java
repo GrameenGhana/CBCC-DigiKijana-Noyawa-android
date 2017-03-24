@@ -13,6 +13,8 @@ import java.io.File;
 /**
  * Created by mac on 1/25/16.
  */
+
+
 public class Noyawa extends Application {
 
     public static final String TAG = Noyawa.class.getSimpleName();
@@ -20,7 +22,7 @@ public class Noyawa extends Application {
 
 
     public static String ROOT_DIR = Environment
-            .getExternalStorageDirectory() + File.separator + "Mlezi";
+            .getExternalStorageDirectory() + File.separator + "Kijana";
 
     public static final String VA_DOC_DIR = "Visual Aids/Documents";
     public static final String VA_IMA_DIR = "Visual Aids/Images";
@@ -90,20 +92,6 @@ public class Noyawa extends Application {
 
     }
 
-    public static String getUsername(){
-        String username=null;
-        prefs=context.getApplicationContext().getSharedPreferences("loginPrefs", MODE_WORLD_READABLE);
-        username=prefs.getString("username", "name");
-        return username;
-    }
 
 
-    public static String getLanguage(){
-        String language=null;
-        if(prefs==null){
-            prefs=context.getApplicationContext().getSharedPreferences("myPrefs", MODE_WORLD_READABLE);
-            language=prefs.getString("option", LANGUAGE_ENGLISH);
-        }
-        return language;
-    }
 }

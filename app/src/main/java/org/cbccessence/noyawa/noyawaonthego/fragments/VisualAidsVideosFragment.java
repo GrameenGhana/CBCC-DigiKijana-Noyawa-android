@@ -1,5 +1,6 @@
 package org.cbccessence.noyawa.noyawaonthego.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class VisualAidsVideosFragment extends Fragment {
     List<Content> videos;
     String TAG = VisualAidsVideosFragment.class.getSimpleName();
 
+    View view;
 
 
 
@@ -103,7 +105,7 @@ public class VisualAidsVideosFragment extends Fragment {
             mAdapter.setOnItemClickListener(onItemClickListener);
         }
 
-        else PlaceHolder.inflateNoContentEmptyView((AppCompatActivity) getActivity().getApplicationContext());
+        else  inflateNoContentEmptyView( );
 
 
 
@@ -138,4 +140,40 @@ public class VisualAidsVideosFragment extends Fragment {
 
         }
     };
+
+
+
+
+
+    public void inflateNoContentEmptyView() {
+
+        if (view == null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+
+            view = inflater.inflate(R.layout.empty_view_no_content, null);
+
+
+            getActivity().getWindow().addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+
+            view.findViewById(R.id.login_button).setVisibility(View.GONE);
+
+        }
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (view != null) {
+            try {
+                ((ViewGroup) view.getParent()).removeView(view);
+            } catch (Exception e) {
+                Log.i(TAG, e.getMessage());
+            }
+        }
+    }
+
 }
