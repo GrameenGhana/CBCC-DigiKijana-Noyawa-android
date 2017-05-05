@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:animateLayoutChanges="true"
-    tools:context=".activity.MenuActivity">
+    tools:context=".activity.MenuActivity_Updated">
 
 
     <android.support.design.widget.CoordinatorLayout

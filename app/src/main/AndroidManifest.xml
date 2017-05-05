@@ -50,6 +50,7 @@
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingsActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MeetingSessionActivity"/>
         <activity android:name="org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity_Updated"/>
+        <activity android:name=".activity.VisualAidsPdfView"/>
 
 
     </application>

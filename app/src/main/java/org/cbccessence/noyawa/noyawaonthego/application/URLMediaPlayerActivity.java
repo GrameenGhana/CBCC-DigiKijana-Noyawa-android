@@ -31,61 +31,61 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class URLMediaPlayerActivity extends AppCompatActivity {
+public class URLMediaPlayerActivity extends BaseActivity {
 
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
-	private Player player;
-	private DatabaseHandler db;
-	private String module;
-	private String submodule;
-	private String type;
-	private String duration;
-	private String duration_played;
-	private String extras;
-	private TextView totalTime;
-	private TelephonyStateListener phoneStateListener;
-	private FileInputStream fis;
+    private Player player;
+    private DatabaseHandler db;
+    private String module;
+    private String submodule;
+    private String type;
+    private String fileName;
+    private String duration;
+    private String duration_played;
+    private String extras;
+    private TextView totalTime;
+    private TelephonyStateListener phoneStateListener;
+    private FileInputStream fis;
     ImageButton play;
+
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        player=new Player(URLMediaPlayerActivity.this,mediaPlayer);
+        Intent intent = getIntent();
+        player=new Player(URLMediaPlayerActivity.this, mediaPlayer);
 
         // remove title and go full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        db = new DatabaseHandler(URLMediaPlayerActivity.this);
+        db=new  DatabaseHandler(URLMediaPlayerActivity.this);
 
         // get data from main activity intent
-        Intent intent = getIntent();
-        final String audioFile = intent.getStringExtra(Noyawa.AUDIO_URL);
-        type=intent.getStringExtra(Noyawa.TYPE);
-        module=intent.getStringExtra(Noyawa.MODULE);
-        extras=intent.getStringExtra(Noyawa.EXTRAS);
-        submodule=intent.getStringExtra(Noyawa.SUB_MODULE);
+
+        final String audioFile =   intent.getStringExtra(Noyawa.AUDIO_URL);
+
+        type = intent.getStringExtra(Noyawa.TYPE);
+        fileName= intent.getStringExtra("fileName");
+        module = intent.getStringExtra(Noyawa.MODULE);
+        extras = intent.getStringExtra(Noyawa.EXTRAS);
+        submodule = intent.getStringExtra(Noyawa.SUB_MODULE);
         //final String coverImage = intent.getStringExtra(MobiHealth.IMG_URL);
-    	phoneStateListener = new TelephonyStateListener(URLMediaPlayerActivity.this, mediaPlayer);
+        phoneStateListener = new TelephonyStateListener(URLMediaPlayerActivity.this, mediaPlayer);
 
         // create a media player
         mediaPlayer = new MediaPlayer();
 
         // try to load data and play
         try {
-        	 mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.FULL_WAKE_LOCK);
-        	//AssetFileDescriptor descriptor = URLMediaPlayerActivity.this.getAssets().openFd(audioFile);
-            //long start = descriptor.getStartOffset();
-            //long end = descriptor.getLength();
-            // give data to mediaPlayer
-            //mediaPlayer.setDataSource(descriptor.getFileDescriptor(), start, end);
-            File file = new File(Environment.getExternalStorageDirectory(),audioFile);
-            if(!file.exists()){
-                file=new File("/mnt/extSdCard/",audioFile);
-            }
-            mediaPlayer.setDataSource(this, Uri.fromFile(file));
+            mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.FULL_WAKE_LOCK);
 
+
+            File file = new File(audioFile);
+
+            mediaPlayer.setDataSource(this, Uri.fromFile(file));
             // media player asynchronous preparation
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.prepare();
@@ -108,29 +108,25 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
 
             // inflate layout
             setContentView(R.layout.activity_media_player);
-            if (getSupportActionBar() != null)getSupportActionBar().hide();
+
+            try {
+                getSupportActionBar().hide();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
 
             // display title
-            ((TextView)findViewById(R.id.now_playing_text)).setText(audioFile);
 
-
-
+            if(fileName != null) ((TextView)findViewById(R.id.now_playing_text)).setText(fileName);
             play = (ImageButton) findViewById(R.id.play);
-
-
 
             /// Load cover image (we use Picasso Library)
 
             // Get image view
             ImageView mImageView = (ImageView) findViewById(R.id.coverImage);
 
-            // Image url
-          //  String image_url = coverImage;
 
-
-           // Picasso.with(getApplicationContext()).load(image_url).into(mImageView);
-
-            ///
 
             play(null);
 
@@ -140,17 +136,13 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
             //update seekbar
             mRunnable.run();
 
-
-
-
-
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
 
 
-                if(mediaPlayer.isPlaying()) pause(null);
+                    if(mediaPlayer.isPlaying()) pause(null);
 
 
 
@@ -162,6 +154,7 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
 
                 }
             });
+
             //dismiss dialog
             dialog.dismiss();
             /*
@@ -171,13 +164,13 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
 
 
                     //start media player
-                  
+
                 }
             });
 */
 
         } catch (IOException e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             this.finish();
             Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
         }
@@ -189,9 +182,9 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
 
-        
 
-		@Override
+
+        @Override
         public void run() {
             if(mediaPlayer != null) {
 
@@ -239,7 +232,7 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
             mHandler.postDelayed(this, 10);
         }
     };
-	
+
 
 
 
@@ -254,9 +247,9 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
 
 
 
-    public void play(@Nullable  View view){
+    public void play(@Nullable View view){
 
-            mediaPlayer.start();
+        mediaPlayer.start();
         play.setImageResource(R.drawable.pause);
 
     }
@@ -274,11 +267,11 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
 
         duration=player.mediaPlayerDuration(totalTime,mediaPlayer);
         duration_played=player.mediaPlayerCurrentDuration(mediaPlayer);
-        
+
         db.insertUsageActivity(MenuActivity_Updated.getUserName(),
-				module, submodule,type,db.getDateTime(),
-				duration,duration_played,player.messageStatus(mediaPlayer),
-				extras,Noyawa.SYNC_STATUS_NEW);
+                module, submodule,type,db.getDateTime(),
+                duration,duration_played,player.messageStatus(mediaPlayer),
+                extras, Noyawa.SYNC_STATUS_NEW);
         mediaPlayer.seekTo(0);
         mediaPlayer.pause();
         finish();
@@ -325,9 +318,9 @@ public class URLMediaPlayerActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
         if (mediaPlayer != null) {
-        	duration=player.mediaPlayerDuration(totalTime,mediaPlayer);
-            duration_played=player.mediaPlayerCurrentDuration(mediaPlayer);      
-            db.insertUsageActivity(MenuActivity_Updated.getUserName(),module, submodule,type,db.getDateTime(),duration,duration_played,player.messageStatus(mediaPlayer),extras,Noyawa.SYNC_STATUS_NEW);
+            duration=player.mediaPlayerDuration(totalTime, mediaPlayer);
+            duration_played=player.mediaPlayerCurrentDuration(mediaPlayer);
+             db.insertUsageActivity(MenuActivity_Updated.getUserName(),module, submodule, type, db.getDateTime(), duration, duration_played, player.messageStatus(mediaPlayer), extras, Noyawa.SYNC_STATUS_NEW);
             mediaPlayer.stop();
             //mediaPlayer.reset();
             mediaPlayer.release();

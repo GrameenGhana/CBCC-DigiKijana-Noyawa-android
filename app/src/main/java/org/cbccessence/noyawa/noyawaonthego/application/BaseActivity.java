@@ -27,6 +27,7 @@ import java.util.List;
 
 public class BaseActivity extends AppCompatActivity {
 	Context mContext;
+	static String TAG = BaseActivity.class.getSimpleName();
 
 
 	@Override
@@ -136,7 +137,8 @@ public class BaseActivity extends AppCompatActivity {
 
 			for (File listOfFile : listOfFiles) {
 
-				if (!listOfFile.isDirectory()) {
+
+				if (!listOfFile.isDirectory() && !listOfFile.getName().startsWith(".") && !listOfFile.getName().startsWith("_")) {
 					Content _doc = new Content();
 
 					filename = listOfFile.getName();
@@ -181,7 +183,7 @@ public class BaseActivity extends AppCompatActivity {
 
 			for (File listOfFile : listOfFiles) {
 
-				if (!listOfFile.isDirectory()) {
+				if (!listOfFile.isDirectory() && !listOfFile.getName().startsWith(".") && !listOfFile.getName().startsWith("_")) {
 
 					filename = listOfFile.getName();
 					int pos = filename.lastIndexOf("_");
@@ -239,6 +241,8 @@ public class BaseActivity extends AppCompatActivity {
 
 	public static List<Content> getAudioList(String sub_dir, String subSecName) {
 
+		Log.i(TAG, "Directory is "+ sub_dir + " and subSection is " + subSecName);
+
 		List<Content> docs = new ArrayList<>();
 
 
@@ -257,7 +261,7 @@ public class BaseActivity extends AppCompatActivity {
 		} else { //folder already exist. search for file, if file, open else download
 
 			String filename;
-			String _name = "";
+			String _name;
 			String location;
 
 			File[] listOfFiles = folder.listFiles();
@@ -278,7 +282,7 @@ public class BaseActivity extends AppCompatActivity {
 						else _name = filename;
 
 
-						Log.i("Files in Directory", folder + "\tName\t" + _name + "\tAbsolute path\t" + location);
+						Log.i(TAG, "Files in Directory " + folder + "\tName\t" + _name + "\tAbsolute path\t" + location);
 
 						_doc.setDocName(_name);
 						_doc.setDocLoc(location);

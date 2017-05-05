@@ -21,8 +21,10 @@ import org.cbccessence.noyawa.noyawaonthego.adapter.TrimesterListViewAdapter;
 import org.cbccessence.noyawa.noyawaonthego.application.BaseActivity;
 import org.cbccessence.noyawa.noyawaonthego.application.Noyawa;
 import org.cbccessence.noyawa.noyawaonthego.database.DatabaseHandler;
+import org.cbccessence.noyawa.noyawaonthego.model.Content;
 import org.cbccessence.noyawa.noyawaonthego.model.SubSection;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,8 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSubSectionNamesFromLocation(getActivity(), dir, TAG);
 
     }
 
@@ -144,6 +148,54 @@ public class YouthSexualHealthFragment extends Fragment implements AdapterView.O
     }
 
 
+
+
+    public void getSubSectionNamesFromLocation(Context c, String sub_dir, String activity_name) {
+
+        DatabaseHandler dbh = new DatabaseHandler(c);
+
+
+        File folder = new File(Noyawa.ROOT_DIR + File.separator + sub_dir + File.separator);
+
+        Log.i("Does folder file exist", "File you are looking for is in " + folder);
+
+        if (!folder.exists()) {
+            Boolean status = folder.mkdirs();
+
+
+            Log.i("Directory", "created?  " + status);
+
+
+        } else { //folder already exist. search for file, if file, open else download
+
+            String filename, secName = "";
+
+            File[] listOfFiles = folder.listFiles();
+
+
+            for (File listOfFile : listOfFiles) {
+
+                if (!listOfFile.isDirectory() && !listOfFile.getName().startsWith(".") && !listOfFile.getName().startsWith("_")) {
+
+                    filename = listOfFile.getName();
+                    int pos = filename.lastIndexOf("_");
+
+                    if (pos != -1) secName = filename.substring(0, pos);
+
+                    Log.i("Files in Directory", folder + "\tName\t" + secName + "\tActivity name\t" + activity_name);
+
+
+                    if (!dbh.doesSubSecNameExist(secName, activity_name))
+                        dbh.insertSubSection(secName, activity_name);
+                    else  Log.i("SubSecName", "A file with the subsec name " + secName + " already exist! skipping ...");
+
+
+                }
+            }
+
+
+        }
+    }
 
 
 

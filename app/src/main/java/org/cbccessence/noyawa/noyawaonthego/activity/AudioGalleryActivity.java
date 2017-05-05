@@ -2,6 +2,7 @@ package org.cbccessence.noyawa.noyawaonthego.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,6 +34,7 @@ public class AudioGalleryActivity extends BaseActivity implements OnItemClickLis
 	private String extras;
 	private Intent intent;
 	RelativeLayout emptyView;
+	String TAG = AudioGalleryActivity.class.getSimpleName();
 
 	String subSecName = null;
 	String dir = null;
@@ -50,6 +52,9 @@ public class AudioGalleryActivity extends BaseActivity implements OnItemClickLis
 		dir = intent.getStringExtra("directory");
 		type = intent.getStringExtra("type");
 
+		Log.i(TAG, "SubSecName = " + subSecName);
+		Log.i(TAG, "Directory is " + dir);
+		Log.i(TAG, "Type is " + type);
 
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 		setContentView(R.layout.first_trimester_gallery);
@@ -95,10 +100,14 @@ public class AudioGalleryActivity extends BaseActivity implements OnItemClickLis
 		Intent intent=new Intent(AudioGalleryActivity.this, URLMediaPlayerActivity.class);
 		intent.putExtra("fileName", audioList.get(position).getDocName());
 		intent.putExtra(Noyawa.AUDIO_URL, audioList.get(position).getDocLoc());
+
 		intent.putExtra(Noyawa.TYPE, type);
 		intent.putExtra(Noyawa.SUB_MODULE, submodule);
 		intent.putExtra(Noyawa.MODULE, module);
 		intent.putExtra(Noyawa.EXTRAS,extras);
+		Log.i(TAG, "File name is " + audioList.get(position).getDocName());
+		Log.i(TAG, "File location is at " + audioList.get(position).getDocLoc());
+
 		startActivity(intent);
 	}
 

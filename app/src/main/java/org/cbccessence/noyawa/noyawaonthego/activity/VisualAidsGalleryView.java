@@ -23,7 +23,7 @@ public class VisualAidsGalleryView extends BaseActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 
 		image_loc = getIntent().getExtras().getString("image_location");
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -35,9 +35,9 @@ public class VisualAidsGalleryView extends BaseActivity {
 
 		if (getSupportActionBar()!= null) getSupportActionBar().hide();
 
-	    setContentView(R.layout.visual_aids_gallery_view);
+		setContentView(R.layout.visual_aids_gallery_view);
 
-	    imageView = (TouchImageView) findViewById(R.id.imageView1);
+		imageView = (TouchImageView) findViewById(R.id.imageView1);
 
 
 
@@ -46,12 +46,6 @@ public class VisualAidsGalleryView extends BaseActivity {
 
 		imageView.setImageBitmap(bitmap);
 
-
-
-
-
-
-	    
 	}
 
 

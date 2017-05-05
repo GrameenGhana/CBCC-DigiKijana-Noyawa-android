@@ -98,12 +98,13 @@ public class VisualAidsVideosFragment extends Fragment {
         videos = BaseActivity.getAssetFromLocation(Noyawa.VA_VID_DIR);
 
 
-        if (videos != null){
+        if (videos != null && videos.size() != 0){
             mAdapter = new VisualAidsVideoAdapter(getActivity(), videos);
             mRecycler.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
             mAdapter.setOnItemClickListener(onItemClickListener);
         }
+
 
         else  inflateNoContentEmptyView( );
 

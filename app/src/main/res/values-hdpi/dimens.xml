@@ -1,0 +1,29 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="title">17dp</dimen>
+    <dimen name="rating">15dip</dimen>
+    <dimen name="genre">13dip</dimen>
+    <dimen name="year">12dip</dimen>
+    <dimen name="spacing_quarter">4dp</dimen>
+    <dimen name="spacing_half">8dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_2">24dp</dimen>
+    <dimen name="spacing_3">32dp</dimen>
+    <dimen name="login_logo_size">90dp</dimen>
+    <dimen name="login_logo_background_size">100dp</dimen>
+    <dimen name="text_size_small">11sp</dimen>
+    <dimen name="text_size_normal">13sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="no_session_logo_size">130dp</dimen>
+    <dimen name="text_size_tiny">10sp</dimen>
+    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="profile_pic_setup_logo_size">90dp</dimen>
+    <dimen name="drawer_header_height">140dp</dimen>
+    <dimen name="drawer_header_textsize">16sp</dimen>
+    <dimen name="drawer_header_text_spacing">@dimen/spacing_normal</dimen>
+    <dimen name="player_controls">40dp</dimen>
+    <dimen name="listview_icon_size">30dp</dimen>
+</resources>

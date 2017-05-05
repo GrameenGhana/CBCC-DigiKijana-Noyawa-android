@@ -140,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                 // check for Internet status
                 if (isInternetPresent) {
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        launchMultiplePermissions(LoginActivity.this);
+                        if(launchMultiplePermissions(LoginActivity.this))
+                            login();
                     else login();
 
                 } else {
@@ -292,7 +293,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             dialogInterface.dismiss();
-                            login();
+
+                            launchMultiplePermissions(LoginActivity.this);
                         }
                     }).setNegativeButton("Quit", new DialogInterface.OnClickListener() {
                         @Override
