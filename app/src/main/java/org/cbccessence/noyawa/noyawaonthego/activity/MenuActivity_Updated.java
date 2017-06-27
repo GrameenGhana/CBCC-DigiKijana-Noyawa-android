@@ -24,10 +24,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.cbccessence.noyawa.noyawaonthego.R;
 import org.cbccessence.noyawa.noyawaonthego.application.BaseActivity;
+import org.cbccessence.noyawa.noyawaonthego.application.Noyawa;
 import org.cbccessence.noyawa.noyawaonthego.fragments.PregnancyMessagesFragment;
 import org.cbccessence.noyawa.noyawaonthego.fragments.RadioSeriesFragment;
 import org.cbccessence.noyawa.noyawaonthego.fragments.RegistrationFragment;
@@ -35,7 +37,9 @@ import org.cbccessence.noyawa.noyawaonthego.fragments.StoryMessagesFragment;
 import org.cbccessence.noyawa.noyawaonthego.fragments.VisualAidsFragment;
 import org.cbccessence.noyawa.noyawaonthego.fragments.YouthSexualHealthFragment;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -46,13 +50,12 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
 
     DrawerLayout navDrawer;
     static SharedPreferences prefs;
+    List<String> languages;
 
     static String[] PERMISSIONS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
     };
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +66,7 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         launchMultiplePermissions(this);
-
-
 
         if (savedInstanceState == null) {
             Fragment fragment = null;
@@ -85,9 +85,15 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
         }
 
 
+        String username = prefs.getString("first_name", "User") + " " + prefs.getString("last_name", "User");
 
 
          navDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView navView = (NavigationView) navDrawer.findViewById(R.id.navigation_view);
+
+        TextView user_name = (TextView) navView.getHeaderView(0).findViewById(R.id.user);
+        user_name.setText(username);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 navDrawer,
@@ -139,7 +145,13 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
 
                 // do stuff
             }
-        }, 5000);
+        }, 2000);
+
+
+
+        languages = new ArrayList<>();
+        languages = getLanguages();
+
 
 
 
@@ -221,44 +233,51 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
                 break;
             case R.id.language:
                 //Show dialog with languages
-
                 logOut = null;
 
-                final ArrayList<String> languages = new ArrayList<>();
-                languages.add("Japanese");
-                languages.add("Hindi");
-                languages.add("Chinese");
-                languages.add("Alien");
-                languages.add("English");
 
 
 
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                        R.layout.select_dialog, R.id.select_item,
-                        languages);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppDialog);
-                builder.setTitle("Please select language")
-                        .setCancelable(true)
-                        .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if(languages != null) {
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                            R.layout.select_dialog, R.id.select_item,
+                            languages);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppDialog);
+                    builder.setTitle("Please select language")
+                            .setCancelable(true)
+                            .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
 
-                                String _language = languages.get(i);
-                                dialogInterface.dismiss();
-                                Toast.makeText(MenuActivity_Updated.this, "You have selected " + _language, Toast.LENGTH_SHORT).show();
+                                    String _language = languages.get(i);
+                                    dialogInterface.dismiss();
 
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MenuActivity_Updated.this);
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("language", _language).apply();
+                                    PreferenceManager.getDefaultSharedPreferences(MenuActivity_Updated.this).edit().putString("language", _language).apply();
 
-                            }
-                        });
+                                    Toast.makeText(MenuActivity_Updated.this, "You have selected " + _language, Toast.LENGTH_SHORT).show();
 
-                builder.create().show();
 
+                                    Noyawa.ROOT_DIR = Noyawa.ROOT + File.separator + PreferenceManager.getDefaultSharedPreferences(MenuActivity_Updated.this).getString("language", _language);
+
+                                    finish();
+                                    overridePendingTransition(0, 0);
+                                    startActivity(new Intent(MenuActivity_Updated.this, MenuActivity_Updated.class));
+
+
+                                }
+                            });
+
+                    builder.create().show();
+
+                } else {
+                    Toast.makeText(this, "No languages found! Default language is set to english", Toast.LENGTH_SHORT).show();
+
+                }
 
 
 
@@ -340,11 +359,6 @@ public class MenuActivity_Updated extends BaseActivity implements NavigationView
         String userName;
         userName = prefs.getString("username", "name");
         return userName;
-    }
-
-    public static String getLanguage(){
-
-        return  prefs.getString("language", "English");
     }
 
 

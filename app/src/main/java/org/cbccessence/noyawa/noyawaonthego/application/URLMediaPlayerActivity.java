@@ -109,6 +109,7 @@ public class URLMediaPlayerActivity extends BaseActivity {
             // inflate layout
             setContentView(R.layout.activity_media_player);
 
+
             try {
                 getSupportActionBar().hide();
             }catch(Exception e){

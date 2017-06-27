@@ -30,6 +30,7 @@ public class BaseActivity extends AppCompatActivity {
 	static String TAG = BaseActivity.class.getSimpleName();
 
 
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
@@ -81,12 +82,10 @@ public class BaseActivity extends AppCompatActivity {
 				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,int id) {
 						 getBaseContext().deleteDatabase(DatabaseHelper.DATABASE_NAME);
-						 String filePath = getApplicationContext().getFilesDir().getPath()+"/"+"shared_prefs/loginPrefs.xml";
-						 File deletePrefFile = new File(filePath );
-						  deletePrefFile.delete();
+
 						  dialog.cancel();
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
-						prefs.edit().clear().apply();
+						prefs.edit().putBoolean("isSignedIn", false).apply();
 						 Intent intent=new Intent(BaseActivity.this, WelcomeActivity.class);
 							startActivity(intent);
 							BaseActivity.this.finish();
@@ -295,6 +294,37 @@ public class BaseActivity extends AppCompatActivity {
 
 			return docs;
 		}
+	}
+
+
+
+
+	public static List<String> getLanguages(){
+
+		List<String> languages = new ArrayList<>();
+		File root = new File(Noyawa.ROOT);
+
+		if(root.isDirectory()) {
+
+			File[] allLanguagesInDirectory = root.listFiles();
+
+			if(allLanguagesInDirectory.length <= 1)
+				return null;
+
+				else {
+
+				for (File lang : allLanguagesInDirectory) {
+					if (lang.isDirectory())
+						languages.add(lang.getName());
+
+					Log.i(TAG, "Language added with name : " + lang.getName());
+
+				} return languages;
+
+			}
+		} return null;
+
+
 	}
 
 

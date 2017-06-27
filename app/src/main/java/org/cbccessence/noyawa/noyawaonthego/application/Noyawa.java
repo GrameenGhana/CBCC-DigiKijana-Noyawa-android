@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.cbccessence.noyawa.noyawaonthego.R;
 
@@ -21,8 +23,12 @@ public class Noyawa extends Application {
     private static Context context;
 
 
+    public static String ROOT = Environment
+            .getExternalStorageDirectory() + File.separator + ".Kijana";
+
     public static String ROOT_DIR = Environment
-            .getExternalStorageDirectory() + File.separator + "Kijana";
+            .getExternalStorageDirectory() + File.separator + "English";
+
 
     public static final String VA_DOC_DIR = "Visual Aids/Documents";
     public static final String VA_IMA_DIR = "Visual Aids/Images";
@@ -84,6 +90,11 @@ public class Noyawa extends Application {
     public void onCreate(){
         super.onCreate();
         Noyawa.context = getApplicationContext();
+
+        ROOT_DIR = ROOT + File.separator + PreferenceManager.getDefaultSharedPreferences(this).getString("language", "English");
+
+        Log.i("APPLICATION", "Language is " + PreferenceManager.getDefaultSharedPreferences(this).getString("language", "English"));
+
         SERVER_ADDRESS=context.getResources().getString(R.string.prefServerDefault);
     }
 

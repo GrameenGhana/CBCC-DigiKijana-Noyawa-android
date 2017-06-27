@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.cbccessence.noyawa.noyawaonthego.HttpHandler;
 import org.cbccessence.noyawa.noyawaonthego.R;
@@ -108,23 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // get Internet status
-                isInternetPresent = cd.checkInternetConnection();
-
-                // check for Internet status
-                if (isInternetPresent) {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        launchMultiplePermissions(LoginActivity.this);
-                    else login();
-
-
-                } else {
-                    // Internet connection is not present
-                    // Ask user to connect to Internet
-                    cd.showAlertDialog(LoginActivity.this, "No Internet Connection",
-                            "You don't have internet connection. Please connect and try again!");
-                }
-
+                checkPermissionAndLogIn();
 
             }
         });
@@ -135,21 +121,9 @@ public class LoginActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(LoginActivity.this.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 
-                isInternetPresent = cd.checkInternetConnection();
 
-                // check for Internet status
-                if (isInternetPresent) {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        if(launchMultiplePermissions(LoginActivity.this))
-                            login();
-                    else login();
+                checkPermissionAndLogIn();
 
-                } else {
-                    // Internet connection is not present
-                    // Ask user to connect to Internet
-                    cd.showAlertDialog(LoginActivity.this, "No Internet Connection",
-                            "You don't have internet connection. Please connect and try again!");
-                }
 
                 return true;
 
@@ -170,6 +144,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
 
+
+
         username = _usernameText.getEditText().getText().toString();
         password = _passwordText.getEditText().getText().toString();
 
@@ -179,13 +155,78 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        _loginButton.setEnabled(false);
-        LoginTask loginTask = new LoginTask(this);
+         LoginTask loginTask = new LoginTask(this);
         loginTask.execute(username, password);
-        _loginButton.setEnabled(true);
+
+     }
 
 
-    }
+
+     void checkPermissionAndLogIn(){
+
+         if(PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getBoolean("isFirstSignIn", true)){
+
+             Log.i(TAG, "Is first run is True");
+             // check for Internet status
+             if (cd.checkInternetConnection()) {
+                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+             launchMultiplePermissions(LoginActivity.this);
+                      else login();
+
+             } else {
+                 // Internet connection is not present
+                 // Ask user to connect to Internet
+                 cd.showAlertDialog(LoginActivity.this, "No Internet Connection",
+                         "You don't have internet connection. Please connect and try again!");
+             }
+
+
+
+
+         }else{     Log.i(TAG, "Is first run is False. Creds have probably been saved before");
+
+
+             if (cd.checkInternetConnection()) {
+                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                   launchMultiplePermissions(LoginActivity.this);
+                     else login();
+
+             } else {
+
+                 Log.i(TAG, "No Internet, Checking for creds locally");
+                 username = _usernameText.getEditText().getText().toString();
+                 password = _passwordText.getEditText().getText().toString();
+
+                 Log.i(TAG, "Login locally");
+
+                 if (!validate()) {
+                     Toast.makeText(LoginActivity.this, "Please enter valid username and or password", Toast.LENGTH_SHORT).show();
+                 } else {
+
+                     if (username.equals(PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("username", "null")) &&
+                             password.equals(PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getString("password", "null"))) {
+
+                         Log.i(TAG, "Local username and password match!");
+                         Intent intent = new Intent(LoginActivity.this, MenuActivity_Updated.class);
+                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putBoolean("isSignedIn", true).apply();
+                         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putBoolean("isFirstSignIn", false).apply();
+                         startActivity(intent);
+                         finish();
+                     } else   Toast.makeText(LoginActivity.this, "Incorrect username and password", Toast.LENGTH_SHORT).show();
+                 }
+
+             }
+
+
+
+         }
+
+
+     }
+
 
 
 

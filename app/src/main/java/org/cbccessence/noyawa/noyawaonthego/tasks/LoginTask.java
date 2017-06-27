@@ -55,7 +55,8 @@ public class LoginTask extends AsyncTask<String, String, String> {
     List<Projects> projects = new ArrayList<Projects>();
     AlertDialog dialog;
     Integer uid;
-
+    String email ;
+    String password ;
 
     public LoginTask(AppCompatActivity c) {
         this.ctx = c;
@@ -86,8 +87,8 @@ public class LoginTask extends AsyncTask<String, String, String> {
         String url = "http://188.166.30.140/gfcare/api/users/login";
         JSONObject json = new JSONObject();
 
-        String email = strings[0];
-        String password = strings[1];
+          email = strings[0];
+          password = strings[1];
         String module = "gfcare-module-3";
 
         try {
@@ -232,7 +233,7 @@ public class LoginTask extends AsyncTask<String, String, String> {
 
                 case "null":
 
-                    post.showAlertDialog(ctx, "Login failed!", "Server is under maintenance, please try again later");
+                    post.showAlertDialog(ctx, "Login failed!", "Server is under maintenance, please try login in offline mode");
 
                     break;
 
@@ -241,23 +242,12 @@ public class LoginTask extends AsyncTask<String, String, String> {
             //logged In start activity
 
 
-            // test
-            Projects _project = new Projects();
-            _project.setProjectId(5);
-            _project.setTeamId(60);
-            _project.setProjectOwnerId(7);
-            _project.setProjectName("Camara's Test Project");
-            _project.setDateUpdated("01/02/02");
-            _project.setgetDateCreated("01/02/02");
-            projects.add(_project);
-
 
             if (projects != null) {
                 Log.i(TAG, "There are " + projects.size() + " project(s) ");
 
                 Log.i(TAG, "0 " + projects.get(0));
 
-                Log.i(TAG, "1 " + projects.get(1));
 
 
                 if (projects.size() == 0) {
@@ -351,6 +341,9 @@ public class LoginTask extends AsyncTask<String, String, String> {
         //test
         responsePostJsonString = "OK";
         prefsEditor = prefs.edit();
+
+        prefsEditor.putString("username", email);
+        prefsEditor.putString("password", password);
 
 
         switch (responsePostJsonString) {
