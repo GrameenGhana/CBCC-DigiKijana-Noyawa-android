@@ -34,12 +34,15 @@ import org.cbccessence.noyawa.noyawaonthego.HttpHandler;
 import org.cbccessence.noyawa.noyawaonthego.R;
 import org.cbccessence.noyawa.noyawaonthego.activity.MenuActivity_Updated;
 import org.cbccessence.noyawa.noyawaonthego.adapter.ProjectsListAdapter;
+import org.cbccessence.noyawa.noyawaonthego.application.Noyawa;
 import org.cbccessence.noyawa.noyawaonthego.database.DatabaseHelper;
 import org.cbccessence.noyawa.noyawaonthego.model.Projects;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,6 +244,7 @@ public class LoginTask extends AsyncTask<String, String, String> {
         } else {
             //logged In start activity
 
+            createNoMediaFile();
 
 
             if (projects != null) {
@@ -375,5 +379,33 @@ public class LoginTask extends AsyncTask<String, String, String> {
 
                 }
         }
+    }
+
+
+    private void createNoMediaFile() {
+
+        try{
+            FileOutputStream out;
+
+            File file = new File(Noyawa.ROOT + File.separator, ".nomedia");
+            if (!file.exists()) {
+                out = new FileOutputStream(file);
+                out.write(0);
+                out.close();
+
+
+                Log.i(TAG, "No media file created!  " + file);
+            } else {
+                Log.i(TAG, "No media already exists!!!!!!  " + file);
+
+            }
+
+
+        }catch(Exception e){e.printStackTrace();}
+
+
+
+
+
     }
 }
